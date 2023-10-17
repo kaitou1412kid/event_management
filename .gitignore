@@ -3,6 +3,9 @@
 # Ignore virtual environment
 env/
 
+#ignore .env
+*.env
+
 # Ignore database file
 *.sqlite3
 
