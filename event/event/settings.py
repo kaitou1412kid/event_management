@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from datetime import timedelta
+# from datetime import timezone, timedelta
+from django.utils import timezone
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -146,7 +148,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME' : timedelta(days = 1),
+    'ACCESS_TOKEN_LIFETIME' : timezone.timedelta(days = 1),
    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
@@ -169,5 +171,19 @@ DJOSER = {
         'user_create' : 'djoser.serializers.UserCreateSerializer',
         'user' : 'djoser.serializers.UserCreateSerializer',
         'user_delete' : 'djoser.serializers.UserDeleteSerializer',
+    },
+}
+
+#Celery configurations
+CELERY_BROKER_URL = 'redis://localhost:6379/'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kathmandu'
+CELERY_BEAT_SCHEDULE = {
+    'send-event-reminders': {
+        'task': 'eventApp.tasks.send_event_reminders',  # Specify the path to your task
+        'schedule': timezone.timedelta(days=1),  # Run daily
     },
 }
