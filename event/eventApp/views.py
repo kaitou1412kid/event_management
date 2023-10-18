@@ -150,3 +150,12 @@ class AttendanceView(APIView):
             }
             return Response(attendance, status=status.HTTP_200_OK)
         return Response({'details':'You are not the organizer'},status=status.HTTP_400_BAD_REQUEST)
+    
+class CategoryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        category = request.GET.get('category','Ramailo Category')
+        event = Event.objects.filter(category = category)
+        serializer =  EventSerializer(event, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
