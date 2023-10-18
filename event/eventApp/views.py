@@ -119,3 +119,34 @@ class FeedbackView(APIView):
             serializer.save(user=request.user, event= event)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class AttendanceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, event_id):
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            return Response({'detail':'Event not found'},status=status.HTTP_404_NOT_FOUND)
+        
+        if request.user == event.organizer:
+
+            rsvps = RSVP.objects.filter(event = event)
+            rsvp_data = []
+
+            for rsvp in rsvps:
+                if rsvp.rsvp_status == 'Going':
+                    user_data = {
+                    'user_id' : rsvp.user.id,
+                    'user_username' : rsvp.user.username,
+                    'rsp_status' : rsvp.rsvp_status
+                    }
+                    rsvp_data.append(user_data)
+
+            attendance = {
+                'event_name' : event.name,
+                'attendance' : len(rsvp_data),
+                'guests' : rsvp_data
+            }
+            return Response(attendance, status=status.HTTP_200_OK)
+        return Response({'details':'You are not the organizer'},status=status.HTTP_400_BAD_REQUEST)
