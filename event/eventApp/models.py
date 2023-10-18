@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class Event(models.Model):
@@ -22,3 +23,11 @@ class RSVP(models.Model):
         choices=[('Going','Going'), ('Not Going','Not Going'),('Maybe','Maybe')],
         default='Maybe'
     )
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(
+        validators=[MinValueValidator(1),MaxValueValidator(5)]
+    )
+    comment = models.TextField()
