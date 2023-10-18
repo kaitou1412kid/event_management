@@ -17,3 +17,7 @@ __pycache__/
 
 # Ignore editor/IDE specific files and directories
 .vscode/
+
+*celerybeat-schedule.bak
+*celerybeat-schedule.dat
+*celerybeat-schedule.dir
