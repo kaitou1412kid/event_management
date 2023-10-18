@@ -13,3 +13,12 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+    
+class RSVP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    rsvp_status = models.CharField(
+        max_length=10,
+        choices=[('Going','Going'), ('Not Going','Not Going'),('Maybe','Maybe')],
+        default='Maybe'
+    )
