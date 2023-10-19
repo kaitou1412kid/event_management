@@ -31,3 +31,10 @@ class Feedback(models.Model):
         validators=[MinValueValidator(1),MaxValueValidator(5)]
     )
     comment = models.TextField()
+
+class EventContent(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    description = models.TextField()
+    image = models.ImageField(upload_to='event_images/')
+    start_time = models.TimeField()
+    end_time = models.TimeField()
