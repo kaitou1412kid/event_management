@@ -24,3 +24,8 @@ def send_event_reminders():
             )
 
     return "Done"
+
+@shared_task
+def send_update(subject, message, sender,receipent):
+    send_mail(subject=subject, message=message,from_email=sender, recipient_list=receipent,fail_silently=True)
+    return "Update done"

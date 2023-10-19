@@ -184,7 +184,7 @@ CELERY_TIMEZONE = 'Asia/Kathmandu'
 CELERY_BEAT_SCHEDULE = {
     'send-event-reminders': {
         'task': 'eventApp.tasks.send_event_reminders',  # Specify the path to your task
-        'schedule': timezone.timedelta(days=1),  # Run daily
+        'schedule': crontab(minute=0, hour=8),  # Run daily at 8 am
     },
 }
 

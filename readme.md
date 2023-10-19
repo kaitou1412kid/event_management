@@ -4,6 +4,8 @@
 Users can register, create, manage, and attend events. Additionally, they can RSVP, view event details, provide feedback. Event organizers can track attendance and manage event-related content.
 </p>
 
+<h3>The API Documentaion can be viewed here: <a href="https://documenter.getpostman.com/view/20090644/2s9YR9Zt8t">Docs</a></h3>
+
 <h2>Operations:</h2>
 <h3>User Registration:</h3>
 <p>Users can register to the event management system.</p>
@@ -42,3 +44,36 @@ Users can register, create, manage, and attend events. Additionally, they can RS
 <h4>Event Details:</h4>
 <img src="images/eventdetail.png">
 
+<h3>Feedback:</h3>
+<h4>Posting Feedback</h4>
+<img src="images/feedbackpost.png">
+
+<h4>Viewing Feedback</h4>
+<img src="images/feedbackget.png">
+
+<h3>Attendance</h3>
+<h4>Viewing attendance</h4>
+<img src="images/attendance.png">
+
+<h3>Category</h3>
+<h4>Filter using category</h4>
+<img src="images/category.png">
+
+<h3>Event Content</h3>
+<h4>Add Content</h4>
+<img src="images/addcontent.png">
+
+<h4>View Content</h4>
+<img src="images/viewcontent.png">
+
+<h4>Edit Content</h4>
+<img src="images/editcontent.png">
+
+<h4>Delete Content</h4>
+<img src="images/deletecontent.png">
+
+<h3>Reminder day before the event:</h3>
+<img src="images/reminder.png">
+
+<h3>Event updates if there is any change in the eent.</h3>
+<img src="images/updatereminder.png">

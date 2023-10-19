@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
 class RSVPSerializer(serializers.ModelSerializer):
     class Meta:
         model = RSVP
-        fields = '__all__'
+        fields = ['rsvp_status']
 
 class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
