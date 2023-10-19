@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import RSVP, Event , Feedback
-from .serializers import EventSerializer , FeedbackSerializer
+from .models import RSVP, Event , Feedback, EventContent
+from .serializers import EventSerializer , FeedbackSerializer, EventcontentSerializer
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import status
 # Create your views here.
@@ -159,3 +159,80 @@ class CategoryView(APIView):
         event = Event.objects.filter(category = category)
         serializer =  EventSerializer(event, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class EventContentView(APIView):
+    permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
+
+    def post(self, request, event_id):
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            return Response({'detail':'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if request.user == event.organizer:
+            serializer = EventcontentSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(event=event)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'You are not the organizer'},status=status.HTTP_401_UNAUTHORIZED)
+    
+    def get(self, request, event_id):
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            return Response({'detail':'Event not found'},status=status.HTTP_404_NOT_FOUND)
+        
+        event_contents = EventContent.objects.filter(event = event)
+        content_data = []
+
+        for event_content in event_contents:
+            event_data = {
+                'image' : event_content.image.url,
+                'description' : event_content.description,
+                'schedule' : {
+                    'start_time' : event_content.start_time,
+                    'end_time' : event_content.end_time
+                }    
+            }
+            content_data.append(event_data)
+
+        eventData = {
+            'event_name' : event.name,
+            'event_description' : event.description,
+            'event_date' : event.date,
+            'event_time' : event.time,
+            'event_content' : content_data
+        }
+        return Response(eventData, status=status.HTTP_200_OK)
+    
+    def put(self, request, event_id, content_id):
+        try:
+            event = Event.objects.get(pk= event_id)
+        except Event.DoesNotExist:
+            return Response({'detail':'Event not found'},status=status.HTTP_404_NOT_FOUND)
+        
+        if request.user == event.organizer:
+            event_content = EventContent.objects.get(pk=content_id)
+            serializer = EventcontentSerializer(event_content,data = request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(event=event)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'You are not the organizer'},status=status.HTTP_401_UNAUTHORIZED)
+    
+    def delete(self, request, event_id,content_id):
+        try:
+            event = Event.objects.get(pk= event_id)
+        except Event.DoesNotExist:
+            return Response({'detail':'Event not found'},status=status.HTTP_404_NOT_FOUND)
+        if request.user == event.organizer:
+            event_content = EventContent.objects.get(pk=content_id)
+            event_content.delete()
+            return Response({'detail':'Content deleted.'},status=status.HTTP_200_OK)
+        return Response({'detail':'You are not the organizer'},status=status.HTTP_401_UNAUTHORIZED)
+
+        
+

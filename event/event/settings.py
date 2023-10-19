@@ -187,3 +187,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timezone.timedelta(days=1),  # Run daily
     },
 }
+
+# settings.py
+
+# Define the directory where uploaded media files will be stored on the server.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Define the base URL for serving media files.
+MEDIA_URL = '/media/'
