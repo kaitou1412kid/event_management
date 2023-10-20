@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 class Event(models.Model):
@@ -38,3 +39,11 @@ class EventContent(models.Model):
     image = models.ImageField(upload_to='event_images/')
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+    def clean(self):
+        if self.event and self.start_time < self.event.time:
+            raise ValidationError("Event Content start time shouldnot be less then the actual event start time.")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args,**kwargs)
