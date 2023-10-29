@@ -129,7 +129,7 @@ class FeedbackView(APIView):
             event = Event.objects.get(pk=event_id)
         except Event.DoesNotExist:
             return Response({'detail': 'Event not found.'}, status=status.HTTP_404_NOT_FOUND)
-
+        
         serializer = FeedbackSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user, event=event)
