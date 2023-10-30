@@ -6,7 +6,9 @@ Users can register, create, manage, and attend events. Additionally, they can RS
 
 <h3>Docker</h3>
 <p>Docker has been added to the project. Just run the following command:</p>
-sudo docker-compose up --build
+```
+sudo docker compose up --build
+```
 
 <h3>The API Documentaion can be viewed here: <a href="https://documenter.getpostman.com/view/20090644/2s9YR9Zt8t">Docs</a></h3>
 
