@@ -4,6 +4,10 @@
 Users can register, create, manage, and attend events. Additionally, they can RSVP, view event details, provide feedback. Event organizers can track attendance and manage event-related content.
 </p>
 
+<h3>Docker</h3>
+<p>Docker has been added to the project. Just run the following command:</p>
+sudo docker-compose up --build
+
 <h3>The API Documentaion can be viewed here: <a href="https://documenter.getpostman.com/view/20090644/2s9YR9Zt8t">Docs</a></h3>
 
 <h2>Operations:</h2>
